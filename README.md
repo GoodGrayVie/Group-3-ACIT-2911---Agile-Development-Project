@@ -2,3 +2,4 @@ Hello hello! Welcome to our group repository. Let's have all memebers write thei
 
 Group Members: 
 Grayson Plug | A01459356
+Victor Sebellin | A01488229

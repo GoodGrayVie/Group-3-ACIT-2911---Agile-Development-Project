@@ -1,6 +1,6 @@
-Hello hello! Welcome to our group repository. Let's have all memebers write their name in this file, followed by their student number. 
+Hello hello! Welcome to our group repository. Let's have all memebers write their name in this file, followed by their student number.
 
-Group Members: 
+Group Members:
 Grayson Plug | A01459356
 Victor Sebellin | A01488229
 Austin Schmidt | A01488228

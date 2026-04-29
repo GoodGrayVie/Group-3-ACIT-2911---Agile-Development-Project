@@ -1,0 +1,7 @@
+[project]
+name = "group-3-acit-2911-agile-development-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []

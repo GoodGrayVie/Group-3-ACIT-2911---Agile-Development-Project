@@ -6,22 +6,29 @@ Victor Sebellin | A01488229
 Austin Schmidt | A01488228
 Phoenix Matticks | A01424183
 
+## Project Structure
+
+```
 Fitness app/
-|
----app.py <-- all Flask routes live here
----database.py <-- SQLite connection + helper functions
----fitness.db <-- database live here
-
----static/ <-- CSS, extras
-|
---styles.css
-
---templates/ <-- HTML pages
-|
---home.html
---login.html
---workout_history.html
---add_workout.html
----Auth/
-|
---auth.py (optional)
+├── app.py                          #flask routes
+├── pyproject.toml
+├── database.py                     #SQLite connection
+├──fitness.db #database
+├── templates/                      #html pages
+│   ├── home.html
+│   ├── login.html
+│   ├── workout_history.html
+│   ├── add_workout.html
+├── auth/
+│   ├── auth.py
+│   ├──
+│   └──
+├── styles
+│   ├──styles.css
+│
+└── tests/
+    ├── __init__.py
+    ├── conftest.py            # Shared test fixtures (fake psutil data)
+    ├── test_monitor.py        # Tests for the Monitor class
+    └── test_agent_api.py      # Tests for the API endpoints
+```

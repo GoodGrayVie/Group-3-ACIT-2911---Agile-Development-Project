@@ -11,7 +11,7 @@ Ishaandeep Purewal | A01487674
 
 ```
 Fitness app/
-├── app.py                          #flask routes
+├── app.py                          #flask routes (this should be changed to multiple probably)
 ├── pyproject.toml
 ├── database.py                     #SQLite connection
 ├──exercises.db #database

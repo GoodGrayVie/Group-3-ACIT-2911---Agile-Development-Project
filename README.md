@@ -14,7 +14,7 @@ Fitness app/
 ├── app.py                          #flask routes
 ├── pyproject.toml
 ├── database.py                     #SQLite connection
-├──fitness.db #database
+├──exercises.db #database
 ├── templates/                      #html pages
 │   ├── home.html
 │   ├── login.html

@@ -5,6 +5,7 @@ Grayson Plug | A01459356
 Victor Sebellin | A01488229
 Austin Schmidt | A01488228
 Phoenix Matticks | A01424183
+Ishaandeep Purewal | A01487674
 
 ## Project Structure
 

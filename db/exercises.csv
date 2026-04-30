@@ -1,0 +1,23 @@
+id,name,muscle_group_id,description
+1,Bench Press,1,Barbell press lying flat on a bench
+2,Incline Dumbbell Press,1,Dumbbell press on an inclined bench
+3,Cable Fly,1,Chest fly using cable machine
+4,Pull Up,2,Bodyweight pull up on a bar
+5,Bent Over Row,2,Barbell row hinged at the hips
+6,Lat Pulldown,2,Cable pulldown targeting the lats
+7,Overhead Press,3,Barbell press overhead from the shoulders
+8,Lateral Raise,3,Dumbbell raise to the sides
+9,Face Pull,3,Cable pull toward the face for rear delts
+10,Barbell Curl,4,Standing curl with a barbell
+11,Hammer Curl,4,Neutral grip dumbbell curl
+12,Preacher Curl,4,Curl performed on a preacher bench
+13,Tricep Pushdown,5,Cable pushdown targeting the triceps
+14,Skull Crusher,5,Barbell extension lying on a bench
+15,Dip,5,Bodyweight dip on parallel bars
+16,Squat,6,Barbell back squat
+17,Romanian Deadlift,6,Hip hinge deadlift with slight knee bend
+18,Leg Press,6,Machine press with legs
+19,Plank,7,Isometric core hold
+20,Cable Crunch,7,Weighted crunch using cable machine
+21,Hip Thrust,8,Barbell thrust driving through the glutes
+22,Glute Kickback,8,Cable or bodyweight kickback for glutes

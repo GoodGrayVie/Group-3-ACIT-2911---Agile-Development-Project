@@ -11,10 +11,10 @@ Ishaandeep Purewal | A01487674
 
 ```
 Fitness app/
-├── app.py                          #flask routes
+├── app.py                          #flask routes (this should be changed to multiple probably)
 ├── pyproject.toml
 ├── database.py                     #SQLite connection
-├──fitness.db #database
+├──exercises.db #database
 ├── templates/                      #html pages
 │   ├── home.html
 │   ├── login.html
@@ -30,6 +30,7 @@ Fitness app/
 └── tests/
     ├── __init__.py
     ├── conftest.py            # Shared test fixtures (fake psutil data)
-    ├── test_monitor.py        # Tests for the Monitor class
-    └── test_agent_api.py      # Tests for the API endpoints
+    ├── test_auth.py
+    ├── test_workouts.py        # Tests for the Monitor class
+    └── test_exercises.py      # Tests for the API endpoints
 ```

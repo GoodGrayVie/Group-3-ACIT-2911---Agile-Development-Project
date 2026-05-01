@@ -1,0 +1,15 @@
+<!-- THIS IS A TEMPLATE -->
+<!DOCTYPE html>
+<html>
+<head><title>Fit Folder – Log Workout</title></head>
+<body>
+  <h2>Log a Workout</h2>
+  <form method="POST" action="/log-workout">
+    <input type="date" name="date" required />
+    <input type="text" name="type" placeholder="e.g. Running" required />
+    <input type="number" name="length" placeholder="Length (mins)" required />
+    <input type="number" name="calories" placeholder="Calories burnt" required />
+    <button type="submit">Save</button>
+  </form>
+</body>
+</html>

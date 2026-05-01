@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fit Folder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Variables ── */
+    :root {
+      --bg:        #0f0f0f;
+      --surface:   #181818;
+      --border:    #2a2a2a;
+      --accent:    #c8f135;
+      --accent-dk: #9bbf1a;
+      --text:      #f0f0f0;
+      --muted:     #666;
+      --danger:    #ff4d4d;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 64px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      user-select: none;
+    }
+
+    .logo span {
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.25rem;
+      border: none;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #0f0f0f;
+    }
+    .btn-accent:hover { background: var(--accent-dk); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid transparent;
+      font-size: 0.8rem;
+    }
+    .btn-ghost:hover { color: var(--danger); border-color: var(--danger); }
+
+    /* ── Flash messages ── */
+    .flash-list {
+      list-style: none;
+      padding: 0.75rem 2.5rem;
+    }
+    .flash-list li {
+      background: #1e2a00;
+      border-left: 3px solid var(--accent);
+      padding: 0.6rem 1rem;
+      margin-bottom: 0.4rem;
+      font-size: 0.875rem;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* ── Main layout ── */
+    main {
+      flex: 1;
+      padding: 2.5rem;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ── Top bar (greeting + Log button) ── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .greeting {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .greeting strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── Section title ── */
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.4s 0.1s ease both;
+    }
+
+    /* ── Workout table ── */
+    .table-wrap {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      animation: fadeUp 0.4s 0.2s ease both;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead {
+      background: #1e1e1e;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 0.85rem 1.25rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.12s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover { background: #1d1d1d; }
+
+    tbody td {
+      padding: 0.85rem 1.25rem;
+    }
+
+    .type-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      background: #222;
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+
+    .empty-state {
+      padding: 3rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .empty-state p { margin-bottom: 1rem; }
+
+    /* ── Not logged in banner ── */
+    .auth-banner {
+      margin-top: 4rem;
+      text-align: center;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .auth-banner h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-banner p {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.25rem;
+      font-size: 0.75rem;
+      color: #333;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
+  <header>
+    <div class="logo">Fit<span>Folder</span></div>
+
+    <nav style="display:flex; align-items:center; gap:0.75rem;">
+      {% if session.get('username') %}
+        <span style="font-size:0.85rem; color:var(--muted);">{{ session['username'] }}</span>
+        <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log out</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════ FLASH ════════════════════════════ -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flash-list">
+        {% for msg in messages %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <!-- ═══════════════════════════ MAIN ═════════════════════════════ -->
+  <main>
+
+    {% if session.get('username') %}
+
+      <!-- Top bar: greeting on left, Log Workout button also on left per spec -->
+      <div class="top-bar">
+        <div style="display:flex; align-items:center; gap:1.25rem;">
+          <a href="{{ url_for('log_workout') }}" class="btn btn-accent">
+            + Log New Workout
+          </a>
+          <p class="greeting">Welcome back, <strong>{{ session['username'] }}</strong></p>
+        </div>
+      </div>
+
+      <p class="section-title">Workout History</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Length (min)</th>
+              <th>Calories Burnt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for w in workouts %}
+            <tr>
+              <td>{{ w.date }}</td>
+              <td><span class="type-badge">{{ w.type }}</span></td>
+              <td>{{ w.length }}</td>
+              <td>{{ w.calories }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="4">
+                <div class="empty-state">
+                  <p>No workouts logged yet.</p>
+                  <a href="{{ url_for('log_workout') }}" class="btn btn-accent">Log your first workout</a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    {% else %}
+
+      <!-- Not logged in -->
+      <div class="auth-banner">
+        <h2>Track Every Rep.</h2>
+        <p>Log in to see your workout history and start tracking your progress.</p>
+        <a href="{{ url_for('login') }}" class="btn btn-accent">Get Started →</a>
+      </div>
+
+    {% endif %}
+
+  </main>
+
+  <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+  <footer>© 2026 FitFolder</footer>
+
+</body>
+</html>

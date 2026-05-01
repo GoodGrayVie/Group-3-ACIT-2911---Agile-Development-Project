@@ -36,20 +36,20 @@ def home():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """
-    Login page — rendered by your teammate's HTML template.
-    Expects a form POST with a 'username' field.
-    The password / auth logic is handled by the auth team; this just
-    captures the username and stores it in the session.
+    Login page — updated to capture username and password.
+    Redirects to dashboard once submitted.
     """
     if request.method == "POST":
         username = request.form.get("username", "").strip()
-        if username:
+        password = request.form.get("password", "").strip()
+        
+        if username and password:
             session["username"] = username
             return redirect(url_for("dashboard"))
-        flash("Please enter a username.")
+            
+        flash("Please enter both a username and password.")
 
     return render_template("login.html")
-
 
 @app.route("/dashboard")
 def dashboard():

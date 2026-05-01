@@ -13,20 +13,23 @@ Ishaandeep Purewal | A01487674
 Fitness app/
 ├── app.py                          #flask routes (this should be changed to multiple probably)
 ├── pyproject.toml
-├── database.py                     #SQLite connection
-├──exercises.db #database
+├──exercises.db
 ├── templates/                      #html pages
 │   ├── home.html
+|   ├── dashboard.html
 │   ├── login.html
-│   ├── workout_history.html
+│   ├── log_workout.html
 │   ├── add_workout.html
 ├── auth/
 │   ├── auth.py
-│   ├──
-│   └──
+|
 ├── styles
 │   ├──styles.css
 │
+├── db/
+    ├── models.py     # peewee
+    ├── seed.py       # data layout
+|
 └── tests/
     ├── __init__.py
     ├── conftest.py            # Shared test fixtures (fake psutil data)

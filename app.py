@@ -24,6 +24,7 @@ def add_workout(username: str, workout: dict) -> None:
 # Routes
 # ---------------------------------------------------------------------------
 
+
 @app.route("/")
 def home():
     """
@@ -42,14 +43,15 @@ def login():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
-        
+
         if username and password:
             session["username"] = username
             return redirect(url_for("dashboard"))
-            
+
         flash("Please enter both a username and password.")
 
     return render_template("login.html")
+
 
 @app.route("/dashboard")
 def dashboard():
@@ -86,10 +88,10 @@ def log_workout():
     if request.method == "POST":
         errors = []
 
-        date_str  = request.form.get("date", "").strip()
-        wtype     = request.form.get("type", "").strip()
-        length    = request.form.get("length", "").strip()
-        calories  = request.form.get("calories", "").strip()
+        date_str = request.form.get("date", "").strip()
+        wtype = request.form.get("type", "").strip()
+        length = request.form.get("length", "").strip()
+        calories = request.form.get("calories", "").strip()
 
         # --- Basic validation ---
         if not date_str:
@@ -129,9 +131,9 @@ def log_workout():
             return render_template("log_workout.html")
 
         workout = {
-            "date":     date_str,
-            "type":     wtype,
-            "length":   length,
+            "date": date_str,
+            "type": wtype,
+            "length": length,
             "calories": calories,
         }
         add_workout(session["username"], workout)

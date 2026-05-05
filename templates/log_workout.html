@@ -96,18 +96,7 @@
     </main>
     <!-- Exercise data injected by Flask route -->
     <script>
-      const exercises = {
-        weights: [
-          { id: 1, name: "Bench Press" },
-          { id: 2, name: "Pull Up" },
-          { id: 3, name: "Squat" },
-        ],
-        cardio: [
-          { id: 1, name: "Running" },
-          { id: 2, name: "Cycling" },
-          { id: 3, name: "Rowing" },
-        ],
-      };
+      const exercises = {{ exercises_json | safe }};
     </script>
     <script src="{{ url_for('static', filename='js/log_workout.js') }}"></script>
   </body>

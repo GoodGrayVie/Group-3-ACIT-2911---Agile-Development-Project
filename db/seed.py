@@ -1,4 +1,4 @@
-from models import db, MuscleGroup, Exercise, CardioExercise
+from .models import db, MuscleGroup, Exercise, CardioExercise
 
 
 def seed():

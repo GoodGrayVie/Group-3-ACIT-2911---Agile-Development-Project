@@ -1,26 +1,40 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from datetime import datetime
+from db.models import db, Workout, MuscleGroup, Exercise
 
-app = Flask(__name__)
-app.secret_key = "change-this-before-production"  # Replace with a secure key
+
+def create_app():
+    app = Flask(__name__)
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exercises.db"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.secret_key = "change-this-before-production"  # Replace with a secure key
+    db.init_app(app)
+
+    with app.app_context():
+        db.create_all()
+
+    return app
+
+app = create_app()
 
 # ---------------------------------------------------------------------------
 # Temporary in-memory store — swap for a real DB (SQLite, Postgres, etc.)
 # ---------------------------------------------------------------------------
-workout_store: dict[str, list[dict]] = {}
+# workout_store: dict[str, list[dict]] = {}
 
 
-def get_user_workouts(username: str) -> list[dict]:
-    """Return the workout history for a given user."""
-    return workout_store.get(username, [])
+# def get_user_workouts(username: str) -> list[dict]:
+#     """Return the workout history for a given user."""
+#     return workout_store.get(username, [])
 
 
-def add_workout(username: str, workout: dict) -> None:
-    """Append a new workout entry for a given user."""
-    workout_store.setdefault(username, []).append(workout)
+# def add_workout(username: str, workout: dict) -> None:
+#     """Append a new workout entry for a given user."""
+#     workout_store.setdefault(username, []).append(workout)
 
 
-# ---------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+
 # Routes
 # ---------------------------------------------------------------------------
 

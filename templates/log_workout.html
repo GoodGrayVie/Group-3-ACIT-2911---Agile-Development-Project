@@ -1,15 +1,103 @@
-<!-- THIS IS A TEMPLATE -->
-<!DOCTYPE html>
-<html>
-<head><title>Fit Folder – Log Workout</title></head>
-<body>
-  <h2>Log a Workout</h2>
-  <form method="POST" action="/log-workout">
-    <input type="date" name="date" required />
-    <input type="text" name="type" placeholder="e.g. Running" required />
-    <input type="number" name="length" placeholder="Length (mins)" required />
-    <input type="number" name="calories" placeholder="Calories burnt" required />
-    <button type="submit">Save</button>
-  </form>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fit Folder - Log Workout</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/styles.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Fit Folder</a>
+        <ul>
+          <li><a href="/history">History</a></li>
+          <li><a href="/profile">Profile</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Log a workout</h1>
+
+      <section aria-label="Workout details">
+        <form id="workout-form" method="POST" action="/workouts/add">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="workout-name">Workout name</label>
+              <input
+                type="text"
+                id="workout-name"
+                name="name"
+                placeholder="e.g. Monday push day"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="workout-date">Date</label>
+              <input type="date" id="workout-date" name="date" required />
+            </div>
+          </div>
+
+          <fieldset>
+            <legend>Workout type</legend>
+            <label class="type-label">
+              <input type="radio" name="workout-type" value="weights" checked />
+              Weights
+            </label>
+            <label class="type-label">
+              <input type="radio" name="workout-type" value="cardio" /> Cardio
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Weight unit</legend>
+            <label class="type-label">
+              <input type="radio" name="weight-unit" value="kg" checked /> kg
+            </label>
+            <label class="type-label">
+              <input type="radio" name="weight-unit" value="lb" /> lb
+            </label>
+          </fieldset>
+
+          <div class="form-group">
+            <label for="exercise-select">Exercise</label>
+            <select id="exercise-select" name="exercise_id">
+              <option value="">Select exercise...</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="add-set-btn" class="btn-ghost">
+              + Add set
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section aria-label="This session">
+        <h2>This session</h2>
+        <div id="session-log">
+          <p id="empty-message">No exercises added yet.</p>
+        </div>
+        <div class="save-row">
+          <button type="submit" form="workout-form" class="btn-accent">
+            Save workout
+          </button>
+        </div>
+      </section>
+    </main>
+    <!-- Exercise data injected by Flask route -->
+    <script>
+      const exercises = {{ exercises_json | safe }};
+    </script>
+    <script src="{{ url_for('static', filename='js/log_workout.js') }}"></script>
+  </body>
 </html>

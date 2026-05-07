@@ -11,29 +11,41 @@ Ishaandeep Purewal | A01487674
 
 ```
 Fitness app/
-├── app.py                          #flask routes (this should be changed to multiple probably)
+├── app.py                          # run app here
 ├── pyproject.toml
-├──exercises.db
-├── templates/                      #html pages
-│   ├── home.html
-|   ├── dashboard.html
-│   ├── login.html
-│   ├── log_workout.html
-│   ├── add_workout.html
-├── auth/
-│   ├── auth.py
-|
-├── styles
-│   ├──styles.css
+├── .gitignore
 │
 ├── db/
-    ├── models.py     # peewee
-    ├── seed.py       # data layout
-|
+│   ├── models.py                   # SQLAlchemy models
+│   └── seed.py                     # initial data
+│
+├── agent_api/
+|   ├── routes/
+|   |   ├── __init__.py        # blueprint - auth_bp & workout_bp
+|   |   ├── auth_routes.py     # login and dashboard routing
+|   |   └── workout_routes.py  # log workouts routing
+│   └── __init__.py            # create app Flask Blueprint
+│
+├── auth/
+│   ├── __init__.py
+│   └── auth.py                    /login, /logout, /register authentication checker
+│
+├── templates/
+│   ├── base.html                   # shared layout
+│   ├── dashboard.html
+│   ├── login.html
+│   └── log_workout.html
+│
+├── static/
+│   ├── styles/
+│   │   └── styles.css
+│   └── js/
+│       └── log_workout.js
+│
 └── tests/
     ├── __init__.py
-    ├── conftest.py            # Shared test fixtures (fake psutil data)
+    ├── conftest.py
     ├── test_auth.py
-    ├── test_workouts.py        # Tests for the Monitor class
-    └── test_exercises.py      # Tests for the API endpoints
+    ├── test_workouts.py
+    └── test_exercises.py
 ```

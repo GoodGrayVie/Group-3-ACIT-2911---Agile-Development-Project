@@ -69,11 +69,8 @@
 
           <div class="form-group">
             <label for="exercise-select">Exercise</label>
-            <select id="exercise-select" name="exercise_id" required>
+            <select id="exercise-select" name="exercise_id">
               <option value="">Select exercise...</option>
-              {% for ex in exercises %}
-              <option value="{{ ex.id }}">{{ ex.name }}</option>
-              {% endfor %}
             </select>
           </div>
 
@@ -98,5 +95,9 @@
       </section>
     </main>
     <!-- Exercise data injected by Flask route -->
+    <script>
+      const exercises = {{ exercises_json | safe }};
+    </script>
+    <script src="{{ url_for('static', filename='js/log_workout.js') }}"></script>
   </body>
 </html>

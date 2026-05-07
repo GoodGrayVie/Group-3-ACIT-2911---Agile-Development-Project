@@ -80,19 +80,17 @@ def dashboard():
 @app.route("/workouts/add", methods=["GET", "POST"], endpoint="log_workout")
 def log_workout():
     if request.method == "GET":
-        exercises = Exercise.query.order_by(Exercise.name).all()
+        weight_exercises = Exercise.query.order_by(Exercise.name).all()
         cardio_exercises = CardioExercise.query.order_by(CardioExercise.name).all()
 
         exercises_json = json.dumps(
-            [{"id": ex.id, "name": ex.name} for ex in exercises]
+            {
+                "weights": [{"id": ex.id, "name": ex.name} for ex in weight_exercises],
+                "cardio": [{"id": ex.id, "name": ex.name} for ex in cardio_exercises],
+            }
         )
 
-        return render_template(
-            "log_workout.html",
-            exercises=exercises,
-            cardio_exercises=cardio_exercises,
-            exercises_json=exercises_json,
-        )
+        return render_template("log_workout.html", exercises_json=exercises_json)
 
     # -----------------------------
     #  Save workout

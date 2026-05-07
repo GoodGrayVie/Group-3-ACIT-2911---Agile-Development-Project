@@ -1,4 +1,5 @@
-from models import db, MuscleGroup, Exercise, CardioExercise
+from werkzeug.security import generate_password_hash
+from models import db, MuscleGroup, Exercise, CardioExercise, User
 
 
 def seed():
@@ -60,6 +61,17 @@ def seed():
     db.session.commit()
 
     print("Seeded muscle groups, exercises, and cardio exercises.")
+
+test_users = [
+    {"name": "austin", "email": "austin@test.com", "hashed_password": generate_password_hash("password123")},
+    {"name": "victor",   "email": "victor@test.com",   "hashed_password": generate_password_hash("password123")},
+    {"name": "admin", "email": "admin@test.com", "hashed_password": generate_password_hash("admin123")},
+]
+
+for u in test_users:
+    if not User.query.filter_by(name=u["name"]).first():
+        db.session.add(User(**u))
+db.session.commit()
 
 
 if __name__ == "__main__":

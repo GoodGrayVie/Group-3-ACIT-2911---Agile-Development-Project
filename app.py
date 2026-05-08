@@ -1,157 +1,77 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash
-from datetime import datetime
+from werkzeug.security import check_password_hash
+from db.models import db, User
+import os
 
 app = Flask(__name__)
-app.secret_key = "change-this-before-production"  # Replace with a secure key
+app.secret_key = "ishaan-project-secret"
 
-# ---------------------------------------------------------------------------
-# Temporary in-memory store — swap for a real DB (SQLite, Postgres, etc.)
-# ---------------------------------------------------------------------------
-workout_store: dict[str, list[dict]] = {}
+# Database path setup
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'exercises.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 
-
-def get_user_workouts(username: str) -> list[dict]:
-    """Return the workout history for a given user."""
-    return workout_store.get(username, [])
-
-
-def add_workout(username: str, workout: dict) -> None:
-    """Append a new workout entry for a given user."""
-    workout_store.setdefault(username, []).append(workout)
-
-
-# ---------------------------------------------------------------------------
-# Routes
-# ---------------------------------------------------------------------------
-
+# In-memory history (Linked to usernames)
+workout_store = {}
 
 @app.route("/")
 def home():
-    """
-    Home page — always goes straight to the dashboard.
-    Login is optional via the header button.
-    """
-    return redirect(url_for("dashboard"))
-
+    return redirect(url_for("login"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """
-    Login page — updated to capture username and password.
-    Redirects to dashboard once submitted.
-    """
     if request.method == "POST":
-        username = request.form.get("username", "").strip()
-        password = request.form.get("password", "").strip()
-
-        if username and password:
-            session["username"] = username
+        # Match 'name="username"' from your login.html
+        u_input = request.form.get("username", "").strip()
+        p_input = request.form.get("password", "").strip()
+        
+        # Check database for user
+        user = User.query.filter((User.name == u_input) | (User.email == u_input)).first()
+        
+        if user and check_password_hash(user.hashed_password, p_input):
+            session["username"] = user.name
+            flash(f"Logged in as {user.name}")
             return redirect(url_for("dashboard"))
-
-        flash("Please enter both a username and password.")
-
+        
+        flash("Invalid Credentials")
     return render_template("login.html")
-
 
 @app.route("/dashboard")
 def dashboard():
-    """
-    Main dashboard — always renders for any visitor.
-    Passes username and workouts if logged in, None/[] if not.
-
-    Template receives:
-        username (str | None)    – logged-in user's name, or None
-        workouts (list[dict])    – workout history, or empty list
-    """
-    username = session.get("username")
-    workouts = get_user_workouts(username) if username else []
-
-    return render_template("dashboard.html", username=username, workouts=workouts)
-
+    if "username" not in session:
+        return redirect(url_for("login"))
+    
+    user = session["username"]
+    # LINKED HISTORY: Only get workouts for this specific user
+    user_workouts = workout_store.get(user, [])
+    return render_template("dashboard.html", username=user, workouts=user_workouts)
 
 @app.route("/log-workout", methods=["GET", "POST"])
 def log_workout():
-    """
-    Log a new workout.
-    GET  – renders the log-workout form (teammate's template).
-    POST – validates and saves the workout, then redirects to dashboard.
-
-    Expected form fields:
-        date     (str)  e.g. "2026-04-29"
-        type     (str)  e.g. "Running"
-        length   (str)  e.g. "45"  (minutes)
-        calories (str)  e.g. "320"
-    """
     if "username" not in session:
         return redirect(url_for("login"))
-
+    
     if request.method == "POST":
-        errors = []
-
-        date_str = request.form.get("date", "").strip()
-        wtype = request.form.get("type", "").strip()
-        length = request.form.get("length", "").strip()
-        calories = request.form.get("calories", "").strip()
-
-        # --- Basic validation ---
-        if not date_str:
-            errors.append("Date is required.")
-        else:
-            try:
-                datetime.strptime(date_str, "%Y-%m-%d")
-            except ValueError:
-                errors.append("Date must be in YYYY-MM-DD format.")
-
-        if not wtype:
-            errors.append("Workout type is required.")
-
-        if not length:
-            errors.append("Length is required.")
-        else:
-            try:
-                length = int(length)
-                if length <= 0:
-                    raise ValueError
-            except ValueError:
-                errors.append("Length must be a positive whole number (minutes).")
-
-        if not calories:
-            errors.append("Calories burnt is required.")
-        else:
-            try:
-                calories = int(calories)
-                if calories < 0:
-                    raise ValueError
-            except ValueError:
-                errors.append("Calories must be a non-negative whole number.")
-
-        if errors:
-            for error in errors:
-                flash(error)
-            return render_template("log_workout.html")
-
-        workout = {
-            "date": date_str,
-            "type": wtype,
-            "length": length,
-            "calories": calories,
+        user = session["username"]
+        new_workout = {
+            "type": request.form.get("type"),
+            "date": request.form.get("date"),
+            "length": request.form.get("length")
         }
-        add_workout(session["username"], workout)
-        flash("Workout logged successfully!")
+        # Add to this user's specific history
+        if user not in workout_store:
+            workout_store[user] = []
+        workout_store[user].append(new_workout)
+        
+        flash("Workout logged!")
         return redirect(url_for("dashboard"))
-
     return render_template("log_workout.html")
-
 
 @app.route("/logout")
 def logout():
-    """Clear the session and return to the dashboard."""
     session.clear()
-    return redirect(url_for("dashboard"))
+    return redirect(url_for("login"))
 
-
-# ---------------------------------------------------------------------------
-# Dev entry point
-# ---------------------------------------------------------------------------
 if __name__ == "__main__":
     app.run(debug=True)

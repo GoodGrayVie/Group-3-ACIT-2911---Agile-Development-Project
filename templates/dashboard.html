@@ -327,18 +327,16 @@
           <thead>
             <tr>
               <th>Date</th>
-              <th>Type</th>
-              <th>Length (min)</th>
-              <th>Calories Burnt</th>
+              <th>Workout</th>
+              <th>Notes</th>
             </tr>
           </thead>
           <tbody>
             {% for w in workouts %}
             <tr>
               <td>{{ w.date }}</td>
-              <td><span class="type-badge">{{ w.type }}</span></td>
-              <td>{{ w.length }}</td>
-              <td>{{ w.calories }}</td>
+              <td><span class="type-badge">{{ w.name }}</span></td>
+              <td>{{ w.notes or '-' }}</td>
             </tr>
             {% else %}
             <tr>

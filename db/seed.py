@@ -29,8 +29,28 @@ def seed():
 
     # 2. Seed Exercises
     exercises = [
-        ("Bench Press", "Chest"), ("Pull Up", "Back"), ("Overhead Press", "Shoulders"),
-        ("Barbell Curl", "Biceps"), ("Tricep Pushdown", "Triceps"), ("Squat", "Legs")
+        ("Bench Press",            "Chest"),
+        ("Incline Dumbbell Press", "Chest"),
+        ("Cable Fly",              "Chest"),
+        ("Pull Up",                "Back"),
+        ("Bent Over Row",          "Back"),
+        ("Lat Pulldown",           "Back"),
+        ("Overhead Press",         "Shoulders"),
+        ("Lateral Raise",          "Shoulders"),
+        ("Face Pull",              "Shoulders"),
+        ("Barbell Curl",           "Biceps"),
+        ("Hammer Curl",            "Biceps"),
+        ("Preacher Curl",          "Biceps"),
+        ("Tricep Pushdown",        "Triceps"),
+        ("Skull Crusher",          "Triceps"),
+        ("Dip",                    "Triceps"),
+        ("Squat",                  "Legs"),
+        ("Romanian Deadlift",      "Legs"),
+        ("Leg Press",              "Legs"),
+        ("Plank",                  "Core"),
+        ("Cable Crunch",           "Core"),
+        ("Hip Thrust",             "Glutes"),
+        ("Glute Kickback",         "Glutes"),
     ]
     for name, group_name in exercises:
         if not Exercise.query.filter_by(name=name).first():
@@ -39,6 +59,23 @@ def seed():
                 db.session.add(Exercise(name=name, muscle_group_id=group.id))
     db.session.commit()
 
+    cardio_exercises = [
+        "Running",
+        "Cycling",
+        "Rowing",
+        "Swimming",
+        "Jump Rope",
+        "Elliptical",
+        "Stair Climber",
+        "Walking",
+    ]
+
+    for name in cardio_exercises:
+        if not CardioExercise.query.filter_by(name=name).first():
+            db.session.add(CardioExercise(name=name))
+    db.session.commit()
+
+    print("Seeded muscle groups, exercises, and cardio exercises.")
     # 3. Seed Test Users
     test_users = [
         {"name": "austin", "email": "austin@test.com", "hashed_password": generate_password_hash("password123")},

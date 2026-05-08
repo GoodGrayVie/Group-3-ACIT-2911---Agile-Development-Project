@@ -27,8 +27,8 @@ def login():
         if user and check_password_hash(user.hashed_password, p_input):
             session["username"] = user.name
             flash(f"Logged in as {user.name}")
-            return redirect(url_for("dashboard"))
-        
+            return redirect(url_for("auth.dashboard"))
+
         flash("Invalid Credentials")
     return render_template("login.html")
 

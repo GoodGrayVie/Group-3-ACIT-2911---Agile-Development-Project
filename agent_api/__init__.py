@@ -10,7 +10,9 @@ def create_app():
         static_folder=os.path.join(os.path.dirname(__file__), "..", "static"),
     )
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exercises.db"
+
+    db_path = os.path.join(os.path.dirname(__file__), '..', 'instance', 'exercises.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.abspath(db_path)}'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.secret_key = "change-this-before-production"  # Replace with a secure key
 
@@ -22,5 +24,7 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        from db.seed import seed
+        seed()
 
     return app

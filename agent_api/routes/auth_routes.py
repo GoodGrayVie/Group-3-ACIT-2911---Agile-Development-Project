@@ -20,20 +20,17 @@ def login():
         # Match 'name="username"' from your login.html
         u_input = request.form.get("username", "").strip()
         p_input = request.form.get("password", "").strip()
-
+        
         # Check database for user
-        user = User.query.filter(
-            (User.name == u_input) | (User.email == u_input)
-        ).first()
-
+        user = User.query.filter((User.name == u_input) | (User.email == u_input)).first()
+        
         if user and check_password_hash(user.hashed_password, p_input):
             session["username"] = user.name
             flash(f"Logged in as {user.name}")
             return redirect(url_for("dashboard"))
-
+        
         flash("Invalid Credentials")
     return render_template("login.html")
-
 
 @auth_bp.route("/dashboard")
 def dashboard():

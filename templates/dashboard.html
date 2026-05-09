@@ -1,54 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fit Folder</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" />
-  </head>
-  <body>
-    <!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
-    <header>
-      <div class="logo">Fit<span>Folder</span></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fit Folder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" />
+</head>
+<body>
 
-      <nav style="display: flex; align-items: center; gap: 0.75rem">
-        {% if session.get('username') %}
-        <span style="font-size: 0.85rem; color: var(--muted)"
-          >{{ session['username'] }}</span
-        >
-        <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">Log out</a>
-        {% else %}
-        <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Login</a>
-        {% endif %}
-      </nav>
-    </header>
+  <!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
+  <header>
+    <div class="logo">Fit<span>Folder</span></div>
 
-    <!-- ═══════════════════════════ FLASH ════════════════════════════ -->
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul class="flash-list">
-      {% for msg in messages %}
-      <li>{{ msg }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
+    <nav>
+      {% if username %}
+        <span class="nav-username">{{ username }}</span>
+        <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log out</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+      {% endif %}
+    </nav>
+  </header>
 
-    <!-- ═══════════════════════════ MAIN ═════════════════════════════ -->
-    <main>
-      {% if session.get('username') %}
+  <!-- ═══════════════════════════ FLASH ════════════════════════════ -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flash-list">
+        {% for msg in messages %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
 
-      <!-- Top bar: greeting on left, Log Workout button also on left per spec -->
+  <!-- ═══════════════════════════ MAIN ═════════════════════════════ -->
+  <main>
+
+    {% if username %}
+
       <div class="top-bar">
-        <div style="display: flex; align-items: center; gap: 1.25rem">
-          <a href="{{ url_for('workout.log_workout') }}" class="btn btn-accent">
-            + Log New Workout
-          </a>
-          <p class="greeting">
-            Welcome back, <strong>{{ session['username'] }}</strong>
-          </p>
+        <div class="top-bar-left">
+          <p class="greeting">Welcome back, <strong>{{ username }}</strong></p>
+          </div>
+          <div>
+          <a href="{{ url_for('log_workout') }}" class="btn btn-accent">+ Log New Workout</a>
         </div>
       </div>
 
@@ -59,27 +55,25 @@
           <thead>
             <tr>
               <th>Date</th>
-              <th>Workout</th>
-              <th>Notes</th>
+              <th>Type</th>
+              <th>Length (min)</th>
+              <th>Calories Burnt</th>
             </tr>
           </thead>
           <tbody>
             {% for w in workouts %}
             <tr>
               <td>{{ w.date }}</td>
-              <td><span class="type-badge">{{ w.name }}</span></td>
-              <td>{{ w.notes or '-' }}</td>
+              <td><span class="type-badge">{{ w.type }}</span></td>
+              <td>{{ w.length }}</td>
+              <td>{{ w.calories }}</td>
             </tr>
             {% else %}
             <tr>
               <td colspan="4">
                 <div class="empty-state">
                   <p>No workouts logged yet.</p>
-                  <a
-                    href="{{ url_for('workout.log_workout') }}"
-                    class="btn btn-accent"
-                    >Log your first workout</a
-                  >
+                  <a href="{{ url_for('log_workout') }}" class="btn btn-accent">Log your first workout</a>
                 </div>
               </td>
             </tr>
@@ -88,23 +82,20 @@
         </table>
       </div>
 
-      {% else %}
+    {% else %}
 
-      <!-- Not logged in -->
       <div class="auth-banner">
         <h2>Track Every Rep.</h2>
-        <p>
-          Log in to see your workout history and start tracking your progress.
-        </p>
-        <a href="{{ url_for('auth.login') }}" class="btn btn-accent"
-          >Get Started →</a
-        >
+        <p>Log in to see your workout history and start tracking your progress.</p>
+        <a href="{{ url_for('login') }}" class="btn btn-accent">Get Started →</a>
       </div>
 
-      {% endif %}
-    </main>
+    {% endif %}
 
-    <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
-    <footer>© 2026 FitFolder</footer>
-  </body>
+  </main>
+
+  <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+  <footer>© 2026 FitFolder</footer>
+
+</body>
 </html>

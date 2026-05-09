@@ -2,3 +2,6 @@ __pycache__/
 .venv/
 instance/
 .env
+uv.lock
+pyproject.toml
+EOF

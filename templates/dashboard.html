@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -23,16 +23,14 @@
     </nav>
   </header>
 
-  <!-- ═══════════════════════════ FLASH ════════════════════════════ -->
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul class="flash-list">
-        {% for msg in messages %}
-          <li>{{ msg }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
+    <!-- ═══════════════════════════ FLASH ════════════════════════════ -->
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul class="flash-list">
+      {% for msg in messages %}
+      <li>{{ msg }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
 
   <!-- ═══════════════════════════ MAIN ═════════════════════════════ -->
   <main>
@@ -55,25 +53,27 @@
           <thead>
             <tr>
               <th>Date</th>
-              <th>Type</th>
-              <th>Length (min)</th>
-              <th>Calories Burnt</th>
+              <th>Workout</th>
+              <th>Notes</th>
             </tr>
           </thead>
           <tbody>
             {% for w in workouts %}
             <tr>
               <td>{{ w.date }}</td>
-              <td><span class="type-badge">{{ w.type }}</span></td>
-              <td>{{ w.length }}</td>
-              <td>{{ w.calories }}</td>
+              <td><span class="type-badge">{{ w.name }}</span></td>
+              <td>{{ w.notes or '-' }}</td>
             </tr>
             {% else %}
             <tr>
               <td colspan="4">
                 <div class="empty-state">
                   <p>No workouts logged yet.</p>
-                  <a href="{{ url_for('log_workout') }}" class="btn btn-accent">Log your first workout</a>
+                  <a
+                    href="{{ url_for('workout.log_workout') }}"
+                    class="btn btn-accent"
+                    >Log your first workout</a
+                  >
                 </div>
               </td>
             </tr>
@@ -82,20 +82,22 @@
         </table>
       </div>
 
-    {% else %}
+      {% else %}
 
       <div class="auth-banner">
         <h2>Track Every Rep.</h2>
-        <p>Log in to see your workout history and start tracking your progress.</p>
-        <a href="{{ url_for('login') }}" class="btn btn-accent">Get Started →</a>
+        <p>
+          Log in to see your workout history and start tracking your progress.
+        </p>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-accent"
+          >Get Started →</a
+        >
       </div>
 
-    {% endif %}
+      {% endif %}
+    </main>
 
-  </main>
-
-  <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
-  <footer>© 2026 FitFolder</footer>
-
-</body>
+    <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+    <footer>© 2026 FitFolder</footer>
+  </body>
 </html>

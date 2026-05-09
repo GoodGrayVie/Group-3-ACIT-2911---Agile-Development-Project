@@ -1,69 +1,71 @@
 import pytest
-from app import workout_store
+from db.models import db, Workout
 
 
 def test_dashboard_shows_username(client):
     """Test that the dashboard displays the logged-in username."""
-    # Simulate login
-    client.post("/login", data={"username": "testuser", "password": "password123"})
+    response = client.post(
+        "/login",
+        data={"username": "testuser", "password": "password123"},
+        follow_redirects=True,
+    )
 
-    # Access the dashboard
-    response = client.get("/dashboard")
-
-    # Check that the username appears in the response
     assert response.status_code == 200
     assert b"testuser" in response.data
 
 
-def test_dashboard_shows_workouts(client):
-    """Test that the dashboard displays the user's workout history."""
-    # Clear any existing workouts for this user
-    workout_store["testuser"] = []
+def test_dashboard_shows_workouts(client, app):
+    """Test that workout entries appear on the dashboard after logging a workout."""
+    with app.app_context():
+        Workout.query.delete()
+        db.session.commit()
 
-    # Simulate login
-    client.post("/login", data={"username": "testuser", "password": "password123"})
+    login_response = client.post(
+        "/login",
+        data={"username": "testuser", "password": "password123"},
+        follow_redirects=True,
+    )
+    assert login_response.status_code == 200
+    assert b"testuser" in login_response.data
 
-    # Log a workout
-    client.post("/log-workout", data={
-        "date": "2023-10-01",
-        "type": "Running",
-        "length": "45",
-        "calories": "300"
-    })
+    add_response = client.post(
+        "/workouts/add",
+        data={
+            "name": "Morning Run",
+            "date": "2026-05-08",
+            "notes": "Nice run",
+        },
+        follow_redirects=True,
+    )
 
-    # Access the dashboard
-    response = client.get("/dashboard")
-
-    # Check that the workout appears in the response
-    assert response.status_code == 200
-    assert b"Running" in response.data
-    assert b"45" in response.data
-    assert b"300" in response.data
+    assert add_response.status_code == 200
+    assert b"Morning Run" in add_response.data
 
 
 def test_dashboard_no_username_when_not_logged_in(client):
     """Test that the dashboard does not show a username when not logged in."""
-    # Access the dashboard without logging in
     response = client.get("/dashboard")
 
-    # Check that no username is displayed (should show login link instead)
     assert response.status_code == 200
     assert b"testuser" not in response.data
     assert b"Login" in response.data
 
 
-def test_dashboard_no_workouts_when_empty(client):
-    """Test that the dashboard shows empty state when no workouts exist."""
-    # Simulate login
-    client.post("/login", data={"username": "testuser", "password": "password123"})
+def test_dashboard_no_workouts_when_empty(client, app):
+    """Test that the dashboard shows an empty state when there are no workouts."""
+    with app.app_context():
+        Workout.query.delete()
+        db.session.commit()
 
-    # Clear workouts
-    workout_store["testuser"] = []
+    login_response = client.post(
+        "/login",
+        data={"username": "testuser", "password": "password123"},
+        follow_redirects=True,
+    )
+    assert login_response.status_code == 200
 
-    # Access the dashboard
     response = client.get("/dashboard")
 
-    # Check for empty state message
     assert response.status_code == 200
-    assert b"No workouts logged yet." in response.data</content>
-    assert b"No workouts logged yet." in response.data
+    assert b"No workouts logged yet" in response.data
+ 

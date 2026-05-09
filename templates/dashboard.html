@@ -16,9 +16,9 @@
     <nav>
       {% if username %}
         <span class="nav-username">{{ username }}</span>
-        <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log out</a>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">Log out</a>
       {% else %}
-        <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Login</a>
       {% endif %}
     </nav>
   </header>
@@ -44,7 +44,7 @@
           <p class="greeting">Welcome back, <strong>{{ username }}</strong></p>
           </div>
           <div>
-          <a href="{{ url_for('log_workout') }}" class="btn btn-accent">+ Log New Workout</a>
+          <a href="{{ url_for('workout.log_workout') }}" class="btn btn-accent">+ Log New Workout</a>
         </div>
       </div>
 
@@ -73,7 +73,7 @@
               <td colspan="4">
                 <div class="empty-state">
                   <p>No workouts logged yet.</p>
-                  <a href="{{ url_for('log_workout') }}" class="btn btn-accent">Log your first workout</a>
+                  <a href="{{ url_for('workout.log_workout') }}" class="btn btn-accent">Log your first workout</a>
                 </div>
               </td>
             </tr>
@@ -87,7 +87,7 @@
       <div class="auth-banner">
         <h2>Track Every Rep.</h2>
         <p>Log in to see your workout history and start tracking your progress.</p>
-        <a href="{{ url_for('login') }}" class="btn btn-accent">Get Started →</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-accent">Get Started →</a>
       </div>
 
     {% endif %}

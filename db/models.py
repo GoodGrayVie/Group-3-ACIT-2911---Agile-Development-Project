@@ -38,7 +38,6 @@ class CardioExercise(db.Model):
     def __repr__(self):
         return f"<CardioExercise {self.name}>"
 
-
 class Workout(db.Model):
     __tablename__ = "workouts"
 

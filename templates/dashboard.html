@@ -1,54 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fit Folder</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fit Folder</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/styles.css') }}"
+    />
+  </head>
+  <body>
+    <!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
+    <header>
+      <div class="logo">Fit<span>Folder</span></div>
 
-  <!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
-  <header>
-    <div class="logo">Fit<span>Folder</span></div>
-
-    <nav>
-      {% if username %}
+      <nav>
+        {% if username %}
         <span class="nav-username">{{ username }}</span>
         <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">Log out</a>
-      {% else %}
+        {% else %}
         <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Login</a>
-      {% endif %}
-    </nav>
-  </header>
+        {% endif %}
+      </nav>
+    </header>
 
-  <!-- ═══════════════════════════ FLASH ════════════════════════════ -->
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul class="flash-list">
-        {% for msg in messages %}
-          <li>{{ msg }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
+    <!-- ═══════════════════════════ FLASH ════════════════════════════ -->
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul class="flash-list">
+      {% for msg in messages %}
+      <li>{{ msg }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
 
-  <!-- ═══════════════════════════ MAIN ═════════════════════════════ -->
-  <main>
-
-    {% if username %}
+    <!-- ═══════════════════════════ MAIN ═════════════════════════════ -->
+    <main>
+      {% if username %}
 
       <div class="top-bar">
         <div class="top-bar-left">
           <p class="greeting">Welcome back, <strong>{{ username }}</strong></p>
-          </div>
-          <div>
-          <a href="{{ url_for('workout.log_workout') }}" class="btn btn-accent">+ Log New Workout</a>
+        </div>
+        <div>
+          <a href="{{ url_for('workout.log_workout') }}" class="btn btn-accent"
+            >+ Log New Workout</a
+          >
         </div>
       </div>
 
       <p class="section-title">Workout History</p>
+      <div>
+        <a href="{{ url_for('workout.view_progress') }}" class="btn btn-accent">
+          > View workout history</a
+        >
+      </div>
 
       <div class="table-wrap">
         <table>
@@ -73,7 +82,11 @@
               <td colspan="4">
                 <div class="empty-state">
                   <p>No workouts logged yet.</p>
-                  <a href="{{ url_for('workout.log_workout') }}" class="btn btn-accent">Log your first workout</a>
+                  <a
+                    href="{{ url_for('workout.log_workout') }}"
+                    class="btn btn-accent"
+                    >Log your first workout</a
+                  >
                 </div>
               </td>
             </tr>
@@ -82,20 +95,22 @@
         </table>
       </div>
 
-    {% else %}
+      {% else %}
 
       <div class="auth-banner">
         <h2>Track Every Rep.</h2>
-        <p>Log in to see your workout history and start tracking your progress.</p>
-        <a href="{{ url_for('auth.login') }}" class="btn btn-accent">Get Started →</a>
+        <p>
+          Log in to see your workout history and start tracking your progress.
+        </p>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-accent"
+          >Get Started →</a
+        >
       </div>
 
-    {% endif %}
+      {% endif %}
+    </main>
 
-  </main>
-
-  <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
-  <footer>© 2026 FitFolder</footer>
-
-</body>
+    <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+    <footer>© 2026 FitFolder</footer>
+  </body>
 </html>

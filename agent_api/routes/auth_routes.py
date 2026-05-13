@@ -20,10 +20,12 @@ def login():
         # Match 'name="username"' from your login.html
         u_input = request.form.get("username", "").strip()
         p_input = request.form.get("password", "").strip()
-        
+
         # Check database for user
-        user = User.query.filter((User.name == u_input) | (User.email == u_input)).first()
-        
+        user = User.query.filter(
+            (User.name == u_input) | (User.email == u_input)
+        ).first()
+
         if user and check_password_hash(user.hashed_password, p_input):
             session["username"] = user.name
             flash(f"Logged in as {user.name}")
@@ -31,6 +33,7 @@ def login():
 
         flash("Invalid Credentials")
     return render_template("login.html")
+
 
 @auth_bp.route("/dashboard")
 def dashboard():
@@ -43,8 +46,11 @@ def dashboard():
         workouts (list[dict])    – workout history, or empty list
     """
     username = session.get("username")
-
-    workouts = Workout.query.order_by(Workout.date.desc()).limit(20).all()
+    workouts = []
+    if username:
+        user = User.query.filter_by(name=username).first()
+        if user:
+            workouts = Workout.query.filter_by(user_id=user.id).order_by(Workout.date.desc()).limit(20).all()
     return render_template("dashboard.html", username=username, workouts=workouts)
 
 

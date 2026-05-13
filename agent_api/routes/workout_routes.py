@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request, Blueprint, jsonify
+from flask import render_template, redirect, url_for, request, Blueprint, jsonify, session
 from datetime import datetime
 from db.models import (
     db,
@@ -7,6 +7,7 @@ from db.models import (
     CardioExercise,
     WorkoutCardio,
     WorkoutSet,
+    User
 )
 import json
 
@@ -27,6 +28,7 @@ def log_workout():
         )
 
         return render_template("log_workout.html", exercises_json=exercises_json)
+       
 
     # -----------------------------
     #  Save workout
@@ -39,7 +41,8 @@ def log_workout():
     date = datetime.strptime(date_str, "%Y-%m-%d").date()
 
     # Create workout
-    workout = Workout(name=name, date=date, notes=notes)
+    user = User.query.filter_by(name=session.get("username")).first()
+    workout = Workout(name=name, date=date, notes=notes, user_id=user.id)
     db.session.add(workout)
     db.session.flush()
 
@@ -91,13 +94,20 @@ def log_workout():
 
     # Commit everything
     db.session.commit()
+    print("FORM DATA:", request.form)
+    print("WORKOUT SETS:", workout.sets)
+    print("WORKOUT CARDIO:", workout.cardio)
 
     return redirect(url_for("auth.dashboard"))
 
 
 @workout_bp.route("/workouts/<int:workout_id>")
 def view_workout(workout_id):
-    """Show all detail for a single workout."""
+    """Show all detail for a single workout.
+    Workouts are only visible to the User who created that workout
+    """
+    if not session.get("username"):
+        return redirect(url_for("auth.login"))
     workout = Workout.query.get_or_404(workout_id)
     return render_template("workout_detail.html", workout=workout)
 

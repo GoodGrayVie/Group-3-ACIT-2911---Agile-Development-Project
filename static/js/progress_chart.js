@@ -18,6 +18,15 @@ const statLatestDate = document.getElementById("statLatestDate");
 const chartTitle = document.getElementById("chartTitle");
 const chartSubtitle = document.getElementById("chartSubtitle");
 
+const statBestLabel = document.getElementById("statBestLabel");
+
+const statLabelMap = {
+  weight: "Best weight",
+  reps: "Best reps",
+  distance: "Best km",
+  duration: "Best time",
+  heart_rate: "Best heart rate",
+};
 // -------------------------------
 //  Populate dropdowns on load
 // -------------------------------
@@ -173,8 +182,12 @@ function renderChart(data, stat) {
 //  Update stat cards
 // -------------------------------
 function updateStats(data) {
-  const values = data.values;
+  const stat = statSelect.value;
 
+  statBestLabel.textContent = statLabelMap[stat] || "Best";
+
+  const values = data.values;
+  
   const best = Math.max(...values);
   const bestIndex = values.indexOf(best);
 
@@ -230,6 +243,5 @@ exerciseSelect.addEventListener("change", () => {
 });
 statSelect.addEventListener("change", updateChart);
 yearSelect.addEventListener("change", updateChart);
-
 
 init();

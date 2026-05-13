@@ -1,4 +1,3 @@
-<!-- THIS IS A TEMPLATE -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -9,33 +8,44 @@
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
-    
-    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/styles.css') }}"
+    />
   </head>
   <body>
-    <div class="login-card">
-      <h2>Login</h2>
-      <form method="POST" action="{{ url_for('auth.login') }}">
-        <div class="input-group">
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            placeholder="Enter username"
-            required
-          />
-        </div>
-        <div class="input-group">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter password"
-            required
-          />
-        </div>
-        <button type="submit">Log In</button>
-      </form>
+    <div
+      style="
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div class="login-card">
+        <h2>Login</h2>
+        <form method="POST" action="{{ url_for('auth.login') }}">
+          <div class="input-group">
+            <label>Username</label>
+            <input
+              type="text"
+              name="username"
+              placeholder="Enter username"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              required
+            />
+          </div>
+          <button type="submit">Log In</button>
+        </form>
+      </div>
     </div>
   </body>
 </html>

@@ -19,13 +19,21 @@ const chartTitle = document.getElementById("chartTitle");
 const chartSubtitle = document.getElementById("chartSubtitle");
 
 const statBestLabel = document.getElementById("statBestLabel");
-
 const statLabelMap = {
   weight: "Best weight",
   reps: "Best reps",
   distance: "Best km",
   duration: "Best time",
   heart_rate: "Best heart rate",
+};
+
+const statAvgLabel = document.getElementById("statAvgLabel");
+const statAvgLabelMap = {
+  weight: "Average weight",
+  reps: "Average reps",
+  distance: "Average km",
+  duration: "Average time",
+  heart_rate: "Average heart rate",
 };
 // -------------------------------
 //  Populate dropdowns on load
@@ -185,9 +193,10 @@ function updateStats(data) {
   const stat = statSelect.value;
 
   statBestLabel.textContent = statLabelMap[stat] || "Best";
+  statAvgLabel.textContent = statAvgLabelMap[stat] || "Average";
 
   const values = data.values;
-  
+
   const best = Math.max(...values);
   const bestIndex = values.indexOf(best);
 

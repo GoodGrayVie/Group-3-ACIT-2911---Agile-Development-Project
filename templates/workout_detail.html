@@ -3,7 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ workout.name }}</title>
+    <title>{{ workout.name }} – Fit Folder</title>
   </head>
-  <body></body>
+  <body>
+    <nav>
+      <a href="/">Fit Folder</a>
+      <a href="/dashboard">Dashboard</a>
+    </nav>
+
+    <main>
+      <h1>{{ workout.name }}</h1>
+      <p>Date: {{ workout.date }}</p>
+      {% if workout.notes %}
+      <p>Notes: {{ workout.notes }}</p>
+      {% endif %} {% if workout.sets %}
+      <h2>Weights</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Set</th>
+            <th>Reps</th>
+            <th>Weight</th>
+            <th>Heart Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in workout.sets %}
+          <tr>
+            <td>{{ s.exercise.name }}</td>
+            <td>{{ s.set_number }}</td>
+            <td>{{ s.reps }}</td>
+            <td>{{ s.weight }} {{ s.weight_unit }}</td>
+            <td>{{ s.heart_rate if s.heart_rate else '—' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %} {% if workout.cardio %}
+      <h2>Cardio</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Duration (mins)</th>
+            <th>Distance (km)</th>
+            <th>Heart Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in workout.cardio %}
+          <tr>
+            <td>{{ c.exercise.name }}</td>
+            <td>{{ c.duration }}</td>
+            <td>{{ c.distance if c.distance else '—' }}</td>
+            <td>{{ c.heart_rate if c.heart_rate else '—' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %} {% if not workout.sets and not workout.cardio %}
+      <p>No exercises recorded for this workout.</p>
+      {% endif %}
+    </main>
+  </body>
 </html>

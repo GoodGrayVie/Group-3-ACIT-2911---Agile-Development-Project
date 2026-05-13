@@ -27,8 +27,8 @@
     <main>
       <h1>Log a workout</h1>
 
-      <section aria-label="Workout details">
-        <form id="workout-form" method="POST" action="/workouts/add">
+      <form id="workout-form" method="POST" action="/workouts/add">
+        <section aria-label="Workout details">
           <div class="form-row">
             <div class="form-group">
               <label for="workout-name">Workout name</label>
@@ -69,7 +69,7 @@
 
           <div class="form-group">
             <label for="exercise-select">Exercise</label>
-            <select id="exercise-select" name="exercise_id">
+            <select id="exercise-select">
               <option value="">Select exercise...</option>
             </select>
           </div>
@@ -79,21 +79,20 @@
               + Add set
             </button>
           </div>
-        </form>
-      </section>
+        </section>
 
-      <section aria-label="This session">
-        <h2>This session</h2>
-        <div id="session-log">
-          <p id="empty-message">No exercises added yet.</p>
-        </div>
-        <div class="save-row">
-          <button type="submit" form="workout-form" class="btn-accent">
-            Save workout
-          </button>
-        </div>
-      </section>
+        <section aria-label="This session">
+          <h2>This session</h2>
+          <div id="session-log">
+            <p id="empty-message">No exercises added yet.</p>
+          </div>
+          <div class="save-row">
+            <button type="submit" class="btn-accent">Save workout</button>
+          </div>
+        </section>
+      </form>
     </main>
+
     <!-- Exercise data injected by Flask route -->
     <script>
       const exercises = {{ exercises_json | safe }};

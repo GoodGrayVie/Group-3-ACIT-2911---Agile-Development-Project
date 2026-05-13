@@ -28,6 +28,7 @@ def log_workout():
         )
 
         return render_template("log_workout.html", exercises_json=exercises_json)
+       
 
     # -----------------------------
     #  Save workout
@@ -93,6 +94,9 @@ def log_workout():
 
     # Commit everything
     db.session.commit()
+    print("FORM DATA:", request.form)
+    print("WORKOUT SETS:", workout.sets)
+    print("WORKOUT CARDIO:", workout.cardio)
 
     return redirect(url_for("auth.dashboard"))
 

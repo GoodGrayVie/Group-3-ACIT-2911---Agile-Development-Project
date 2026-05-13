@@ -74,23 +74,27 @@ addSetBtn.addEventListener("click", () => {
 
   if (type === "weights") {
     row.innerHTML = `
-            <td>${setNumber}</td>
-            <td><input type="number" name="reps[]" min="1" placeholder="—" aria-label="Reps"></td>
-            <td><input type="number" name="weight[]" min="0" step="0.5" placeholder="—" aria-label="Weight (${getUnit()})"></td>
-            <td><input type="number" name="heart_rate[]" min="0" placeholder="—" aria-label="Heart rate (bpm)"></td>
-            <td><button type="button" class="btn-remove" onclick="this.closest('tr').remove()">✕</button></td>
-        `;
+      <td style="display:none"><input type="hidden" name="exercise_id[]" value="${exerciseId}"></td>
+      <td style="display:none"><input type="hidden" name="set_number[]" value="${setNumber}"></td>
+      <td style="display:none"><input type="hidden" name="weight_unit[]" value="${getUnit()}"></td>
+      <td>${setNumber}</td>
+      <td><input type="number" name="reps[]" min="1" placeholder="—" aria-label="Reps"></td>
+      <td><input type="number" name="weight[]" min="0" step="0.5" placeholder="—" aria-label="Weight (${getUnit()})"></td>
+      <td><input type="number" name="set_heart_rate[]" min="0" placeholder="—" aria-label="Heart rate (bpm)"></td>
+      <td><button type="button" class="btn-remove" onclick="this.closest('tr').remove()">✕</button></td>
+    `;
   } else {
     row.innerHTML = `
-            <td><input type="number" name="duration[]" min="1" placeholder="—" aria-label="Duration (mins)"></td>
-            <td><input type="number" name="distance[]" min="0" step="0.1" placeholder="—" aria-label="Distance (km)"></td>
-            <td><input type="number" name="heart_rate[]" min="0" placeholder="—" aria-label="Heart rate (bpm)"></td>
-            <td><button type="button" class="btn-remove" onclick="this.closest('tr').remove()">✕</button></td>
-        `;
+      <td style="display:none"><input type="hidden" name="cardio_exercise_id[]" value="${exerciseId}"></td>
+      <td><input type="number" name="duration[]" min="1" placeholder="—" aria-label="Duration (mins)"></td>
+      <td><input type="number" name="distance[]" min="0" step="0.1" placeholder="—" aria-label="Distance (km)"></td>
+      <td><input type="number" name="cardio_heart_rate[]" min="0" placeholder="—" aria-label="Heart rate (bpm)"></td>
+      <td><button type="button" class="btn-remove" onclick="this.closest('tr').remove()">✕</button></td>
+    `;
   }
 
   tbody.appendChild(row);
-  row.querySelector("input").focus();
+  row.querySelector("input:not([type='hidden'])").focus();
 });
 
 function createExerciseGroup(name, exerciseId, type) {
@@ -100,11 +104,11 @@ function createExerciseGroup(name, exerciseId, type) {
   group.dataset.type = type;
 
   group.innerHTML = `
-        <div class="group-header">
-            <h3>${name}</h3>
-            <span class="type-badge ${type}">${type}</span>
-        </div>
-    `;
+    <div class="group-header">
+      <h3>${name}</h3>
+      <span class="type-badge ${type}">${type}</span>
+    </div>
+  `;
 
   const table = document.createElement("table");
   const thead = document.createElement("thead");

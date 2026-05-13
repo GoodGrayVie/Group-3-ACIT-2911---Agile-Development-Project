@@ -46,8 +46,11 @@ def dashboard():
         workouts (list[dict])    – workout history, or empty list
     """
     username = session.get("username")
-
-    workouts = Workout.query.order_by(Workout.date.desc()).limit(20).all()
+    workouts = []
+    if username:
+        user = User.query.filter_by(name=username).first()
+        if user:
+            workouts = Workout.query.filter_by(user_id=user.id).order_by(Workout.date.desc()).limit(20).all()
     return render_template("dashboard.html", username=username, workouts=workouts)
 
 

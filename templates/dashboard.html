@@ -16,19 +16,7 @@
   <body>
     <!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
     <header>
-      <a href="{{ url_for('auth.dashboard') }}" class="logo"
-        >Fit<span>Folder</span></a
-      >
-
-      <div class="nav-center">
-        <a
-          href="{{ url_for('workout.log_workout') }}"
-          class="btn btn-outline btn-nav"
-          >Add Workout</a
-        >
-        <a href="#" class="btn btn-outline btn-nav">Statistics</a>
-        <a href="#" class="btn btn-outline btn-nav">Recommended</a>
-      </div>
+      <div class="logo">Fit<span>Folder</span></div>
 
       <nav>
         {% if username %}

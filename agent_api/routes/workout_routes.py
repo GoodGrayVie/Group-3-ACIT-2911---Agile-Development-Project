@@ -20,12 +20,18 @@ def log_workout():
         weight_exercises = Exercise.query.order_by(Exercise.name).all()
         cardio_exercises = CardioExercise.query.order_by(CardioExercise.name).all()
 
-        exercises_json = json.dumps(
-            {
-                "weights": [{"id": ex.id, "name": ex.name} for ex in weight_exercises],
-                "cardio": [{"id": ex.id, "name": ex.name} for ex in cardio_exercises],
-            }
-        )
+        exercises_json = json.dumps({
+    "weights": [
+        {
+            "id": ex.id,
+            "name": ex.name,
+            "muscle_group": ex.muscle_group.name
+        } for ex in weight_exercises
+    ],
+    "cardio": [
+        {"id": ex.id, "name": ex.name} for ex in cardio_exercises
+    ]
+})
 
         return render_template("log_workout.html", exercises_json=exercises_json)
        

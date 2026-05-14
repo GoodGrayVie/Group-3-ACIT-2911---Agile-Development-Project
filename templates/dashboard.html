@@ -24,6 +24,9 @@
         <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">Log out</a>
         {% else %}
         <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Login</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-outline"
+          >Register</a
+        >
         {% endif %}
       </nav>
     </header>
@@ -51,8 +54,12 @@
           >
         </div>
       </div>
-
       <p class="section-title">Workout History</p>
+      <div>
+        <a href="{{ url_for('workout.view_progress') }}" class="btn btn-accent">
+          > View workout history</a
+        >
+      </div>
 
       <div class="table-wrap">
         <table>

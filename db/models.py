@@ -96,5 +96,3 @@ class WorkoutCardio(db.Model):
 
     def __repr__(self):
         return f"<WorkoutCardio {self.exercise_id}>"
-
-

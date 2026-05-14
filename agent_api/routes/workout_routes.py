@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request, Blueprint, session
+from flask import render_template, redirect, url_for, request, Blueprint, jsonify, session
 from datetime import datetime
 from db.models import (
     db,
@@ -7,7 +7,7 @@ from db.models import (
     CardioExercise,
     WorkoutCardio,
     WorkoutSet,
-    User, 
+    User
 )
 import json
 
@@ -116,3 +116,53 @@ def view_workout(workout_id):
         return redirect(url_for("auth.login"))
     workout = Workout.query.get_or_404(workout_id)
     return render_template("workout_detail.html", workout=workout)
+
+
+@workout_bp.route("/view-progress")
+def view_progress():
+    return render_template("view_workout.html")
+
+
+@workout_bp.route("/view-progress/exercises")
+def get_exercises():
+    strength = Exercise.query.order_by(Exercise.name).all()
+    cardio = CardioExercise.query.order_by(CardioExercise.name).all()
+
+    return jsonify(
+        {
+            "strength": [{"id": ex.id, "name": ex.name} for ex in strength],
+            "cardio": [{"id": ex.id, "name": ex.name} for ex in cardio],
+        }
+    )
+
+
+@workout_bp.route("/view-progress/data")
+def progress_data():
+    exercise_id = request.args.get("exercise_id", type=int)
+    exercise_type = request.args.get("type")  # "strength" or "cardio"
+    stat = request.args.get("stat")
+    year = request.args.get("year", type=int)
+
+    if exercise_type == "strength":
+        query = (
+            db.session.query(WorkoutSet, Workout.date)
+            .join(Workout, WorkoutSet.workout_id == Workout.id)
+            .filter(WorkoutSet.exercise_id == exercise_id)
+        )
+    else:
+        query = (
+            db.session.query(WorkoutCardio, Workout.date)
+            .join(Workout, WorkoutCardio.workout_id == Workout.id)
+            .filter(WorkoutCardio.exercise_id == exercise_id)
+        )
+
+    if year:
+        query = query.filter(db.extract("year", Workout.date) == year)
+
+    query = query.order_by(Workout.date).all()
+
+    labels = [row[1].strftime("%Y-%m-%d") for row in query]
+
+    values = [getattr(row[0], stat) for row in query]
+
+    return jsonify({"labels": labels, "values": values})

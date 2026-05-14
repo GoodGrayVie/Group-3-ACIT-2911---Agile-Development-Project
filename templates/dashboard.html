@@ -16,12 +16,26 @@
   <body>
     <!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
     <header>
-      <div class="logo">Fit<span>Folder</span></div>
+      <a href="{{ url_for('auth.dashboard') }}" class="logo"
+        >Fit<span>Folder</span></a
+      >
+
+      <div class="nav-center">
+        <a
+          href="{{ url_for('workout.log_workout') }}"
+          class="btn btn-outline btn-nav"
+          >Add Workout</a
+        >
+        <a href="#" class="btn btn-outline btn-nav">Statistics</a>
+        <a href="#" class="btn btn-outline btn-nav">Recommended</a>
+      </div>
 
       <nav>
         {% if username %}
         <span class="nav-username">{{ username }}</span>
-        <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">Log out</a>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-outline"
+          >Log out</a
+        >
         {% else %}
         <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Login</a>
         <a href="{{ url_for('auth.register') }}" class="btn btn-outline"

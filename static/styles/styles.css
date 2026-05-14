@@ -338,3 +338,22 @@ button[type="submit"] {
   text-transform: uppercase;
   margin-top: 1rem;
 }
+
+/* ── Nav center links ── */
+.btn-nav {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+}
+
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+}
+
+a.logo {
+  text-decoration: none;
+}

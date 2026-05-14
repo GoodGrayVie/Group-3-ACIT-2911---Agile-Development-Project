@@ -3,7 +3,9 @@ name: Test Python Application
 
 on:
   push:
-    branches: [ "dev" ]
+    branches:
+      - main
+      - "feature/**"
 
 jobs:
   build:
@@ -23,7 +25,7 @@ jobs:
   create-pull-request:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ success() }}
+    if: ${{ success() && github.ref != 'refs/heads/main' }}
     permissions:
       contents: write
       pull-requests: write

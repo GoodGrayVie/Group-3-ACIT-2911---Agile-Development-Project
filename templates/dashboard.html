@@ -33,9 +33,7 @@
       <nav>
         {% if username %}
         <span class="nav-username">{{ username }}</span>
-        <a href="{{ url_for('auth.logout') }}" class="btn btn-outline"
-          >Log out</a
-        >
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">Log out</a>
         {% else %}
         <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Login</a>
         <a href="{{ url_for('auth.register') }}" class="btn btn-outline"
@@ -68,30 +66,42 @@
           >
         </div>
       </div>
-
       <p class="section-title">Workout History</p>
+      <div>
+        <a href="{{ url_for('workout.view_progress') }}" class="btn btn-accent">
+          > View workout history</a
+        >
+      </div>
 
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>Date</th>
-              <th>Type</th>
-              <th>Length (min)</th>
-              <th>Calories Burnt</th>
+              <th>Workout</th>
+              <th>Sets</th>
+              <th>Cardio</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {% for w in workouts %}
             <tr>
               <td>{{ w.date }}</td>
-              <td><span class="type-badge">{{ w.type }}</span></td>
-              <td>{{ w.length }}</td>
-              <td>{{ w.calories }}</td>
+              <td>{{ w.name }}</td>
+              <td>{{ w.sets | length }}</td>
+              <td>{{ w.cardio | length }}</td>
+              <td>
+                <a
+                  href="{{ url_for('workout.view_workout', workout_id=w.id) }}"
+                  class="btn btn-ghost"
+                  >View</a
+                >
+              </td>
             </tr>
             {% else %}
             <tr>
-              <td colspan="4">
+              <td colspan="5">
                 <div class="empty-state">
                   <p>No workouts logged yet.</p>
                   <a

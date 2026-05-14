@@ -4,41 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fit Folder – Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    
+    </style>
   </head>
   <body>
-    <header>
-      <div class="logo">Fit<span>Folder</span></div>
-      <nav>
-        <a href="{{ url_for('auth.register') }}" class="btn btn-outline">Register</a>
-      </nav>
-    </header>
-
-    <div class="login-page">
-      <div class="login-card">
-        <h2>Login</h2>
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <ul class="flash-list">
-              {% for msg in messages %}
-                <li>{{ msg }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
-        <form method="POST" action="{{ url_for('auth.login') }}">
-          <div class="input-group">
-            <label>Username</label>
-            <input type="text" name="username" placeholder="Enter username" required />
-          </div>
-          <div class="input-group">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter password" required />
-          </div>
-          <button type="submit">Log In</button>
-        </form>
-      </div>
+    <div class="login-card">
+      <h2>Login</h2>
+      <form method="POST" action="{{ url_for('auth.login') }}">
+        <div class="input-group">
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            required
+          />
+        </div>
+        <button type="submit">Log In</button>
+      </form>
     </div>
 
     <footer>© 2026 FitFolder</footer>

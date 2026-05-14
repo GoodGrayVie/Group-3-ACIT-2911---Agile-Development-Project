@@ -47,12 +47,36 @@ typeRadios.forEach((radio) => {
  */
 function populateExercises(type) {
   exerciseSelect.innerHTML = '<option value="">Select exercise...</option>';
-  exercises[type].forEach((ex) => {
-    const option = document.createElement("option");
-    option.value = ex.id;
-    option.textContent = ex.name;
-    exerciseSelect.appendChild(option);
-  });
+
+  if (type === "weights") {
+    // Group exercises by muscle group
+    const groups = {};
+    exercises[type].forEach((ex) => {
+      if (!groups[ex.muscle_group]) groups[ex.muscle_group] = [];
+      groups[ex.muscle_group].push(ex);
+    });
+
+    // Create an <optgroup> per muscle group
+    Object.entries(groups).forEach(([groupName, exList]) => {
+      const optgroup = document.createElement("optgroup");
+      optgroup.label = groupName;
+      exList.forEach((ex) => {
+        const option = document.createElement("option");
+        option.value = ex.id;
+        option.textContent = ex.name;
+        optgroup.appendChild(option);
+      });
+      exerciseSelect.appendChild(optgroup);
+    });
+  } else {
+    // Cardio has no muscle groups — flat list
+    exercises[type].forEach((ex) => {
+      const option = document.createElement("option");
+      option.value = ex.id;
+      option.textContent = ex.name;
+      exerciseSelect.appendChild(option);
+    });
+  }
 }
 
 // Initialise dropdown with weights exercises on page load

@@ -9,6 +9,9 @@ const exerciseSelect = document.getElementById("exercise-select");
 const addSetBtn = document.getElementById("add-set-btn");
 const sessionLog = document.getElementById("session-log");
 const emptyMessage = document.getElementById("empty-message");
+const today = new Date();
+const local = new Date(today.getTime() - today.getTimezoneOffset() * 60000);
+document.getElementById("workout-date").valueAsDate = local;
 
 // ── Helpers ─────────────────────────────────────────────────────
 

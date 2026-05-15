@@ -55,8 +55,8 @@ class Workout(db.Model):
     date = db.Column(db.Date, nullable=False)
     notes = db.Column(db.Text, nullable=True)
 
-    sets = db.relationship("WorkoutSet", backref="workout", lazy=True)
-    cardio = db.relationship("WorkoutCardio", backref="workout", lazy=True)
+    sets   = db.relationship("WorkoutSet", backref="workout", lazy=True, cascade="all, delete-orphan")
+    cardio = db.relationship("WorkoutCardio", backref="workout", lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Workout {self.name} {self.date}>"

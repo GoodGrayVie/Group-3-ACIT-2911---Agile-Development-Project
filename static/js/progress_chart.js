@@ -18,7 +18,9 @@ const statLatestDate = document.getElementById("statLatestDate");
 const chartTitle = document.getElementById("chartTitle");
 const chartSubtitle = document.getElementById("chartSubtitle");
 
+const statAvgLabel = document.getElementById("statAvgLabel");
 const statBestLabel = document.getElementById("statBestLabel");
+
 const statLabelMap = {
   weight: "Best weight",
   reps: "Best reps",
@@ -27,7 +29,6 @@ const statLabelMap = {
   heart_rate: "Best heart rate",
 };
 
-const statAvgLabel = document.getElementById("statAvgLabel");
 const statAvgLabelMap = {
   weight: "Average weight",
   reps: "Average reps",
@@ -143,12 +144,18 @@ async function updateChart() {
 
   hideLoading();
 
-  if (!data.labels.length) {
+if (!data.labels.length) {
     showEmpty();
     clearStats();
-    return;
-  }
 
+    // hide chart when no data
+    if (chart) {
+        chart.destroy();
+        chart = null;
+    }
+
+    return;
+}
   hideEmpty();
   updateStats(data);
   renderChart(data, stat);

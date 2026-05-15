@@ -234,18 +234,6 @@ nav {
   color: var(--accent);
 }
 
-.nav-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.btn-nav {
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
-
 /* ── Top bar inner ── */
 .top-bar-left {
   display: flex;
@@ -312,4 +300,23 @@ button[type="submit"] {
         cursor: pointer;
         text-transform: uppercase;
         margin-top: 1rem;
+}
+
+/* ── Nav center links ── */
+.btn-nav {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+}
+
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+}
+
+a.logo {
+  text-decoration: none;
 }

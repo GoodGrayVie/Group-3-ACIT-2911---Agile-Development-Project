@@ -35,7 +35,7 @@ def log_workout():
     ]
 })
 
-        return render_template("log_workout.html", exercises_json=exercises_json)
+        return render_template("log_workout.html", exercises_json=exercises_json, username=session.get("username"))
        
 
     # -----------------------------
@@ -117,7 +117,7 @@ def view_workout(workout_id):
     if not session.get("username"):
         return redirect(url_for("auth.login"))
     workout = Workout.query.get_or_404(workout_id)
-    return render_template("workout_detail.html", workout=workout)
+    return render_template("workout_detail.html", workout=workout, username=session.get("username"))
 
 @workout_bp.route("/workouts/<int:workout_id>/delete", methods=["POST"])
 def delete_workout(workout_id):

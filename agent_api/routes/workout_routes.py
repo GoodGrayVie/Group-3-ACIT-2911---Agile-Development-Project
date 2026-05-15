@@ -16,6 +16,8 @@ workout_bp = Blueprint("workout", __name__)
 
 @workout_bp.route("/workouts/add", methods=["GET", "POST"], endpoint="log_workout")
 def log_workout():
+    if not session.get("username"):
+        return redirect(url_for("auth.login"))
     if request.method == "GET":
         weight_exercises = Exercise.query.order_by(Exercise.name).all()
         cardio_exercises = CardioExercise.query.order_by(CardioExercise.name).all()

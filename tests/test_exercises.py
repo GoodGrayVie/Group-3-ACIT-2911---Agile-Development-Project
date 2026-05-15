@@ -9,7 +9,7 @@ def test_dashboard(client):
 
 
 def test_log_workout(client):
-    response = client.get("/log-workout")
+    response = client.get("workouts/add")
     assert response.status_code == 302
 
 

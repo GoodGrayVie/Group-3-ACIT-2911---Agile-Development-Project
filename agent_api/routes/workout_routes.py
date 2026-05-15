@@ -119,6 +119,19 @@ def view_workout(workout_id):
     workout = Workout.query.get_or_404(workout_id)
     return render_template("workout_detail.html", workout=workout)
 
+@workout_bp.route("/workouts/<int:workout_id>/delete", methods=["POST"])
+def delete_workout(workout_id):
+    if not session.get("username"):
+        return redirect(url_for("auth.login"))
+
+    user = User.query.filter_by(name=session.get("username")).first()
+    workout = Workout.query.filter_by(id=workout_id, user_id=user.id).first_or_404()
+
+    db.session.delete(workout)
+    db.session.commit()
+
+    return redirect(url_for("auth.dashboard"))
+
 
 @workout_bp.route("/view-progress")
 def view_progress():

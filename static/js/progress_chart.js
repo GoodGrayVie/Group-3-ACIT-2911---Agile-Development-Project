@@ -213,8 +213,9 @@ function updateStats(data) {
 
   statLatest.textContent = latest;
   statLatestDate.textContent = data.labels[data.labels.length - 1];
+  const exerciseName = exerciseSelect.selectedOptions[0].textContent;
+  chartTitle.innerHTML = `<span style="color: var(--accent)">Exercise:</span> ${exerciseName}`;
 
-  chartTitle.textContent = exerciseSelect.selectedOptions[0].textContent;
   chartSubtitle.textContent = `Tracking ${stat} in ${yearSelect.value}`;
 }
 

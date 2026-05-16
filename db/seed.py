@@ -99,6 +99,11 @@ def seed():
             "email": "purewalishaan@gmail.com",
             "hashed_password": generate_password_hash("password123"),
         },
+        {
+            "name": "Allan",
+            "email": "asmithee@smith.ca",
+            "hashed_password": generate_password_hash("pass123"),
+        },
     ]
 
     for u in users:

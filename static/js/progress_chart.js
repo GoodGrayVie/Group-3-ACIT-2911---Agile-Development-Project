@@ -144,18 +144,18 @@ async function updateChart() {
 
   hideLoading();
 
-if (!data.labels.length) {
+  if (!data.labels.length) {
     showEmpty();
     clearStats();
 
     // hide chart when no data
     if (chart) {
-        chart.destroy();
-        chart = null;
+      chart.destroy();
+      chart = null;
     }
 
     return;
-}
+  }
   hideEmpty();
   updateStats(data);
   renderChart(data, stat);
@@ -185,12 +185,18 @@ function renderChart(data, stat) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       scales: {
-        x: { ticks: { color: "#6b7585" } },
+        x: {
+          ticks: { color: "#6b7585" },
+          offset: false,
+        },
+
         y: { ticks: { color: "#6b7585" } },
       },
     },
   });
+  chart.resize();
 }
 
 // -------------------------------

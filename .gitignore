@@ -1,8 +1,5 @@
 __pycache__/
 .venv/
 instance/
-.env
-db/__pycache__/seed.cpython-314.pyc
-agent_api/routes/__pycache__/auth_routes.cpython-314.pyc
-agent_api/__pycache__/__init__.cpython-314.pyc
+.env 
 EOF

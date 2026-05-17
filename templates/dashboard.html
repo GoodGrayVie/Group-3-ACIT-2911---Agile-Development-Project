@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fit Folderaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</title>
+    <title>Fit Folder</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap"
       rel="stylesheet"
@@ -20,24 +20,21 @@
         >Fit<span>Folder</span></a>
 
       <div class="nav-center">
-        <a
-          href="{{ url_for('workout.log_workout') }}"
+        <a href="{{ url_for('workout.log_workout') }}"
           class="btn btn-outline btn-nav"
           >Add Workout</a>
-        <a
-          href="{{ url_for('workout.view_progress') }}"
+        <a href="{{ url_for('workout.view_progress') }}"
           class="btn btn-outline btn-nav"
           >Statistics</a>
           
           <a href="#" class="btn btn-outline btn-nav">Recommended</a>
-      </div>
       </div>
 
 
       <nav>
         {% if username %}
         <span class="nav-username">{{ username }}</span>
-        <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">Log out</a>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-outline">Log out</a>
         {% else %}
         <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Login</a>
         <a href="{{ url_for('auth.register') }}" class="btn btn-outline"
@@ -70,20 +67,15 @@
         </div>
       </div>
       <p class="section-title">Workout History</p>
-      <div>
-        <a href="{{ url_for('workout.view_progress') }}" class="btn btn-accent">
-          > View workout history</a
-        >
-      </div>
 
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>Date</th>
-              <th>Workout</th>
-              <th>Sets</th>
-              <th>Cardio</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Exercises</th>
               <th></th>
             </tr>
           </thead>
@@ -92,8 +84,8 @@
             <tr>
               <td>{{ w.date }}</td>
               <td>{{ w.name }}</td>
-              <td>{{ w.sets | length }}</td>
-              <td>{{ w.cardio | length }}</td>
+              <td>{% if w.sets | length > 0 %}Weights{% elif w.cardio | length > 0 %}Cardio{% endif %}</td>
+              <td>{{ (w.sets | length) + (w.cardio | length) }}</td>
               <td>
                 <a
                   href="{{ url_for('workout.view_workout', workout_id=w.id) }}"
@@ -118,6 +110,12 @@
             {% endfor %}
           </tbody>
         </table>
+      </div>
+      <br>
+      <div>
+        <a href="{{ url_for('workout.view_progress') }}" class="btn btn-accent">
+          > View Statistics</a
+        >
       </div>
 
       {% else %}

@@ -118,21 +118,30 @@
         >
       </div>
       {% endif %}
-      <div style="display: flex; justify-content: flex-end; padding: 1rem 0">
+      <div
+        style="
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 1rem 0;
+        "
+      >
+        <a
+          href="{{ url_for('workout.edit_workout', workout_id=workout.id) }}"
+          class="btn btn-accent"
+        >
+          Edit workout
+        </a>
         <form
           method="POST"
           action="{{ url_for('workout.delete_workout', workout_id=workout.id) }}"
           onsubmit="
             return confirm('Are you sure you want to delete this workout?');
           "
+          style="margin: 0"
         >
-          <button
-            type="submit"
-            class="btn btn-accent"
-            style="font-size: 0.8rem"
-          >
-            Delete workout
-          </button>
+          <button type="submit" class="btn btn-accent">Delete workout</button>
         </form>
       </div>
     </main>

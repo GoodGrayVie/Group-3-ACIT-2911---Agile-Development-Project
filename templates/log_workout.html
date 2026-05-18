@@ -49,7 +49,11 @@
     <main>
       <h1>Log a workout</h1>
 
-      <form id="workout-form" method="POST" action="/workouts/add">
+      <form
+        id="workout-form"
+        method="POST"
+        action="{{ url_for('workout.update_workout', workout_id=workout.id) if workout is defined and workout else url_for('workout.log_workout') }}"
+      >
         <section aria-label="Workout details">
           <div class="form-row">
             <div class="form-group">
@@ -59,15 +63,21 @@
                 id="workout-name"
                 name="name"
                 placeholder="e.g. Monday push day"
+                value="{{ workout.name if workout is defined and workout else '' }}"
                 required
               />
             </div>
             <div class="form-group">
               <label for="workout-date">Date</label>
-              <input type="date" id="workout-date" name="date" required />
+              <input
+                type="date"
+                id="workout-date"
+                name="date"
+                value="{{ workout.date if workout is defined and workout else '' }}"
+                required
+              />
             </div>
           </div>
-
           <fieldset>
             <legend>Workout type</legend>
             <label class="type-label">
@@ -118,6 +128,8 @@
     <!-- Exercise data injected by Flask route -->
     <script>
       const exercises = {{ exercises_json | safe }};
+      const existingSets = {{ existing_sets | safe if existing_sets is defined else '[]' }};
+      const existingCardio = {{ existing_cardio | safe if existing_cardio is defined else '[]' }};
     </script>
     <script src="{{ url_for('static', filename='js/log_workout.js') }}"></script>
   </body>

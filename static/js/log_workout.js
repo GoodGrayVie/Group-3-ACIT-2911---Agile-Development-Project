@@ -202,3 +202,64 @@ function createExerciseGroup(name, exerciseId, type) {
 
   return group;
 }
+
+// ── Pre-populate existing workout data ──────────────────────────
+// If editing an existing workout, existingSets and existingCardio
+// are injected by Flask before this script loads. This function
+// renders those rows into the session log on page load.
+function prePopulate() {
+  if (typeof existingSets !== "undefined" && existingSets.length > 0) {
+    existingSets.forEach((s) => {
+      emptyMessage.hidden = true;
+
+      let group = document.querySelector(
+        `[data-exercise="${s.exerciseId}"][data-type="weights"]`,
+      );
+      if (!group) {
+        group = createExerciseGroup(s.exerciseName, s.exerciseId, "weights");
+        sessionLog.appendChild(group);
+      }
+
+      const tbody = group.querySelector("tbody");
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td style="display:none"><input type="hidden" name="exercise_id[]" value="${s.exerciseId}"></td>
+        <td style="display:none"><input type="hidden" name="set_number[]" value="${s.setNumber}"></td>
+        <td style="display:none"><input type="hidden" name="weight_unit[]" value="${s.weightUnit}"></td>
+        <td>${s.setNumber}</td>
+        <td><input type="number" name="reps[]" min="1" value="${s.reps ?? ""}" aria-label="Reps"></td>
+        <td><input type="number" name="weight[]" min="0" step="0.5" value="${s.weight ?? ""}" aria-label="Weight (${s.weightUnit})"></td>
+        <td><input type="number" name="set_heart_rate[]" min="0" value="${s.heartRate ?? ""}" aria-label="Heart rate (bpm)"></td>
+        <td><button type="button" class="btn-remove" onclick="this.closest('tr').remove()">✕</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  if (typeof existingCardio !== "undefined" && existingCardio.length > 0) {
+    existingCardio.forEach((c) => {
+      emptyMessage.hidden = true;
+
+      let group = document.querySelector(
+        `[data-exercise="${c.exerciseId}"][data-type="cardio"]`,
+      );
+      if (!group) {
+        group = createExerciseGroup(c.exerciseName, c.exerciseId, "cardio");
+        sessionLog.appendChild(group);
+      }
+
+      const tbody = group.querySelector("tbody");
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td style="display:none"><input type="hidden" name="cardio_exercise_id[]" value="${c.exerciseId}"></td>
+        <td><input type="number" name="duration[]" min="1" value="${c.duration ?? ""}" aria-label="Duration (mins)"></td>
+        <td><input type="number" name="distance[]" min="0" step="0.1" value="${c.distance ?? ""}" aria-label="Distance (km)"></td>
+        <td><input type="number" name="cardio_heart_rate[]" min="0" value="${c.heartRate ?? ""}" aria-label="Heart rate (bpm)"></td>
+        <td><button type="button" class="btn-remove" onclick="this.closest('tr').remove()">✕</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+}
+
+prePopulate();

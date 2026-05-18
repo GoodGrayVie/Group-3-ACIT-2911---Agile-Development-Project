@@ -132,6 +132,105 @@ def delete_workout(workout_id):
 
     return redirect(url_for("auth.dashboard"))
 
+@workout_bp.route("/workouts/<int:workout_id>/update", methods=["POST"])
+def update_workout(workout_id):
+    if not session.get("username"):
+        return redirect(url_for("auth.login"))
+
+    user = User.query.filter_by(name=session.get("username")).first()
+    workout = Workout.query.filter_by(id=workout_id, user_id=user.id).first_or_404()
+
+    # Update basic info
+    workout.name = request.form.get("name")
+    workout.date = datetime.strptime(request.form.get("date"), "%Y-%m-%d").date()
+    workout.notes = request.form.get("notes")
+
+    # Delete existing sets and cardio then re-save from form
+    WorkoutSet.query.filter_by(workout_id=workout.id).delete()
+    WorkoutCardio.query.filter_by(workout_id=workout.id).delete()
+
+    # Re-save weight sets
+    exercise_ids = request.form.getlist("exercise_id[]")
+    set_numbers = request.form.getlist("set_number[]")
+    reps_list = request.form.getlist("reps[]")
+    weights = request.form.getlist("weight[]")
+    weight_units = request.form.getlist("weight_unit[]")
+    heart_rates = request.form.getlist("set_heart_rate[]")
+
+    for i in range(len(exercise_ids)):
+        if not exercise_ids[i]:
+            continue
+        db.session.add(WorkoutSet(
+            workout_id=workout.id,
+            exercise_id=int(exercise_ids[i]),
+            set_number=int(set_numbers[i]),
+            reps=int(reps_list[i]),
+            weight=float(weights[i]),
+            weight_unit=weight_units[i],
+            heart_rate=int(heart_rates[i]) if heart_rates[i] else None,
+        ))
+
+    # Re-save cardio
+    cardio_ids = request.form.getlist("cardio_exercise_id[]")
+    durations = request.form.getlist("duration[]")
+    distances = request.form.getlist("distance[]")
+    cardio_hr = request.form.getlist("cardio_heart_rate[]")
+
+    for i in range(len(cardio_ids)):
+        if not cardio_ids[i]:
+            continue
+        db.session.add(WorkoutCardio(
+            workout_id=workout.id,
+            exercise_id=int(cardio_ids[i]),
+            duration=int(durations[i]),
+            distance=float(distances[i]) if distances[i] else None,
+            heart_rate=int(cardio_hr[i]) if cardio_hr[i] else None,
+        ))
+
+    db.session.commit()
+    return redirect(url_for("workout.view_workout", workout_id=workout.id))
+
+@workout_bp.route("/workouts/<int:workout_id>/edit", methods=["GET"])
+def edit_workout(workout_id):
+    if not session.get("username"):
+        return redirect(url_for("auth.login"))
+
+    user = User.query.filter_by(name=session.get("username")).first()
+    workout = Workout.query.filter_by(id=workout_id, user_id=user.id).first_or_404()
+
+    weight_exercises = Exercise.query.order_by(Exercise.name).all()
+    cardio_exercises = CardioExercise.query.order_by(CardioExercise.name).all()
+
+    exercises_json = json.dumps({
+        "weights": [{"id": ex.id, "name": ex.name, "muscle_group": ex.muscle_group.name} for ex in weight_exercises],
+        "cardio": [{"id": ex.id, "name": ex.name} for ex in cardio_exercises]
+    })
+
+    existing_sets = json.dumps([{
+        "exerciseId": s.exercise_id,
+        "exerciseName": s.exercise.name,
+        "setNumber": s.set_number,
+        "reps": s.reps,
+        "weight": s.weight,
+        "weightUnit": s.weight_unit,
+        "heartRate": s.heart_rate
+    } for s in workout.sets])
+
+    existing_cardio = json.dumps([{
+        "exerciseId": c.exercise_id,
+        "exerciseName": c.exercise.name,
+        "duration": c.duration,
+        "distance": c.distance,
+        "heartRate": c.heart_rate
+    } for c in workout.cardio])
+
+    return render_template("log_workout.html",
+        exercises_json=exercises_json,
+        workout=workout,
+        existing_sets=existing_sets,
+        existing_cardio=existing_cardio,
+        username=session.get("username")
+    )
 
 @workout_bp.route("/view-progress")
 def view_progress():
